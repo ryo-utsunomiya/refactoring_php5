@@ -27,4 +27,21 @@ DOC;
 
         $this->assertThat($customer->statement(), $this->identicalTo($expected));
     }
+
+    /**
+     * @test
+     */
+    public function statementWithoutRental()
+    {
+        $customer = new Customer('ryo');
+
+        $expected = <<<DOC
+Rental Record for ryo
+Amount owed is 0
+You earned 0 frequent renter points
+
+DOC;
+
+        $this->assertThat($customer->statement(), $this->identicalTo($expected));
+    }
 }
