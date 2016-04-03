@@ -12,9 +12,9 @@ class Movie
     private $title;
 
     /**
-     * @var int
+     * @var Price
      */
-    private $priceCode;
+    private $price;
 
     /**
      * @param string $title
@@ -22,8 +22,8 @@ class Movie
      */
     public function __construct($title, $priceCode)
     {
-        $this->title     = $title;
-        $this->priceCode = $priceCode;
+        $this->title = $title;
+        $this->setPriceCode($priceCode);
     }
 
     /**
@@ -31,15 +31,28 @@ class Movie
      */
     public function getPriceCode()
     {
-        return $this->priceCode;
+        return $this->price->getPriceCode();
     }
 
     /**
      * @param int $arg
+     * @throws \InvalidArgumentException
      */
     public function setPriceCode($arg)
     {
-        $this->priceCode = $arg;
+        switch ($arg) {
+            case self::REGULAR:
+                $this->price = new RegularPrice();
+                break;
+            case self::CHILDRENS:
+                $this->price = new ChildrensPrice();
+                break;
+            case self::NEW_RELEASE:
+                $this->price = new NewReleasePrice();
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid price code');
+        }
     }
 
     /**
@@ -48,5 +61,23 @@ class Movie
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param int $daysRented
+     * @return float
+     */
+    public function getCharge($daysRented)
+    {
+        return $this->price->getCharge($daysRented);
+    }
+
+    /**
+     * @param int $daysRented
+     * @return int
+     */
+    public function getFrequentRenterPoints($daysRented)
+    {
+        return $this->price->getFrequentRenterPoints($daysRented);
     }
 }
