@@ -10,7 +10,7 @@ class Customer
     /**
      * @var Rental[]
      */
-    private $rentals;
+    private $rentals = [];
 
     /**
      * @param string $name
@@ -44,10 +44,8 @@ class Customer
     {
         $result = 'Rental Record for ' . $this->getName() . "\n";
 
-        if (count($this->rentals) > 0) {
-            foreach ($this->rentals as $rental) {
-                $result .= "\t" . $rental->getMovie()->getTitle() . "\t" . $rental->getCharge() . "\n";
-            }
+        foreach ($this->rentals as $rental) {
+            $result .= "\t" . $rental->getMovie()->getTitle() . "\t" . $rental->getCharge() . "\n";
         }
 
         $result .= 'Amount owed is ' . $this->getTotalCharge() . "\n";
